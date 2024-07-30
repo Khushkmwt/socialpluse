@@ -1,0 +1,58 @@
+
+
+<nav class="bg-gray-800 text-white flex px-4  flex">
+    <div class="container mx-auto flex justify-between items-center py-6">
+        <div class="logo">
+            <img src="Wordpress Psd Icons Files Download Template Download on Pngtree.jpeg" alt="l" class="h-8">
+        </div>
+      <div class="flex items-center">
+        
+      
+        <div class="hidden md:flex space-x-24 flex">
+          <a href="#" class="hover:text-blue-400 text-lg flex">Home</a>
+          <a href="#" class="hover:text-blue-400 text-lg">About</a>
+          <a href="#" class="hover:text-blue-400 text-lg">Services</a>  
+          <a href="#" class="hover:text-blue-400 text-lg">Contact</a>
+        </div>
+      </div>
+      <div class="flex items-center">
+      
+        <button id="navbar-toggle" class="text-white hover:text-blue-400 md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+         
+        <% if (isLoggedIn) { %> 
+           <form action="/logout" method="POST">
+          <button class="hidden md:inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">
+          <button class="hidden md:inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
+        </a>
+        <a href="/signup">
+          <button class="hidden md:inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Sign Up</button>
+        </a>
+      <% } %>
+      
+        <!-- <form action="/logout" method="post">
+          <button  class="block text-white hover:text-blue-400 px-4 py-2 rounded">logout</button>
+        </form> -->
+      </div>
+  
+      <div id="navbar-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-gray-800 z-10">
+        <ul class="py-4">
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2">Home</a></li>
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2">About</a></li>
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2">Services</a></li>
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2">Contact</a></li>
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2 rounded ">Login</a></li>
+          <li><a href="#" class="block text-white hover:text-blue-400 px-4 py-2 rounded">Sign Up</a></li>
+          <!-- <form action="/logout" method="post">
+            <button  class="block text-white hover:text-blue-400 px-4 py-2 rounded">logout</button>
+          </form> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
