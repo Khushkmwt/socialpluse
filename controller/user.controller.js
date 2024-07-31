@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken'
 import {ApiError} from '../utils/ApiError.js'
 import {asyncHandler} from '../utils/asyncHandler.js'
 import { Post } from '../models/post.model.js'
+import { uploadOnCloudinary } from '../utils/cloudinary.js'
 import mongoose from 'mongoose'
+
 const signupUser = async (req,res) => {
     const {email,password,firstName, lastName,username} = req.body
    
@@ -144,11 +146,19 @@ const updateProfilePic = asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid user ID' });
     }
+    const localpath = req?.file?.url
+    if(!localpath){
+        throw new ApiError(400, "profile picture is required");
+    }
+    const imgUrl = await uploadOnCloudinary(localpath)
+    if(!imgUrl){
+    throw new ApiError(400, "Failed to upload image");
+    }
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             $set: {
-                profilePic: req.body.profilePic
+                coverImg: imgUrl.url
                 }
         },
         { new: true }
@@ -162,6 +172,9 @@ const updateProfilePic = asyncHandler(async (req, res) => {
     });
 //profilepicupdaterender
 const profilePicUpdateRender = asyncHandler(async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
     const user = await User.findById(req.params.id);
     if (!user) {
         throw new ApiError(404, "User not found");
