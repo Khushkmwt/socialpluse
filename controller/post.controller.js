@@ -9,7 +9,7 @@ const index = asyncHandler(async (req, res) => {
       .sort({ createdAt: -1 })
       .populate('owner', 'coverImg username');
   
-    return res.json(posts);
+    res.render('./post/index.ejs',{posts})
   });
   
 
