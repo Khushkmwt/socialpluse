@@ -120,11 +120,15 @@ const updateUser = asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid user ID' });
     }
+    const {bio} = req.body
+    if(!bio){
+        throw new ApiError(400, "bio is required");
+    }
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             $set: {
-                profilePic: req.body.profilePic,
+                
                 bio: req.body.bio
                 }
         },
@@ -135,6 +139,37 @@ const updateUser = asyncHandler(async (req, res) => {
         }
         res.json(user);
 });
+//updateprofilepic
+const updateProfilePic = asyncHandler(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+            $set: {
+                profilePic: req.body.profilePic
+                }
+        },
+        { new: true }
+    );
+    if (!user) {
+        if (!user) {
+            throw new ApiError(404, "User coverImg not updated");
+        }
+    }
+    res.json(user)
+    });
+//profilepicupdaterender
+const profilePicUpdateRender = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+    res.render('./post/profilePicUpdate.ejs', { user });
+})
+
+    
 
 //renderupdatepage
 const renderUpdatePage = asyncHandler(async (req, res) => {
@@ -255,5 +290,7 @@ export {
    followUnfollow,
    renderUpdatePage,
    updateUser,
+updateProfilePic,
+profilePicUpdateRender,
 
 }
