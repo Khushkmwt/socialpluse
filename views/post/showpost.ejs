@@ -1,13 +1,13 @@
 <% layout("./layout/boilerplate.ejs") %>
 <body>
     <div class="container mx-auto p-4">
-  
-      <div class="bg-white shadow rounded-lg mb-4">
+    
+      <div class="bg-white shadow rounded-lg mb-4 w-3/4 pl-20">
         <div class="flex items-center p-4 border-b border-gray-300">
           <img src="<%= post?.owner?.coverImg %>" class="w-10 h-10 rounded-full mr-2" alt="Profile picture">
           <span class="font-bold"><%= post.owner.username %></span>
         </div>
-        <img src="<%= post?.image %>" class="w-full h-96 object-cover rounded-lg">
+        <img src="<%= post?.image %>" class="w-96 h-96 object-cover rounded-lg">
         <div class="flex justify-between items-center p-4">
           <div class="flex items-center space-x-4">
             <button type="button" class="text-blue-500 hover:text-blue-700">
@@ -52,4 +52,58 @@
     <script>
       // ... your JavaScript code for handling comment submission
     </script>
-  </body>
+  </body> 
+
+
+
+
+
+
+  <!-- <body class="container mx-auto p-4">
+
+    <div class="bg-white shadow rounded-lg mb-4">
+      <div class="flex items-center p-4 border-b border-gray-300">
+        <img src="<%= post.owner.coverImg %>" class="w-10 h-10 rounded-full mr-2" alt="Profile picture">
+        <span class="font-bold"><%= post.owner.username %></span>
+      </div>
+      <img src="<%= post.image %>" class="w-full h-96 object-cover rounded-lg">
+      <div class="flex justify-between items-center p-4">
+        <div class="flex items-center space-x-4">
+          <button type="button" class="text-blue-500 hover:text-blue-700">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+          <button type="button" class="text-gray-500 hover:text-gray-700">
+            <i class="fa-regular fa-comment"></i>
+          </button>
+        </div>
+        <span class="font-bold"><%= post.likes %></span>
+      </div>
+      <div class="p-4 border-b border-gray-300">
+        <span class="font-bold"><%= post.owner.username %></span>
+        <span> <%= post.caption %></span>
+      </div>
+    </div>
+  
+    <div id="comments">
+      <% if (post.Comments.length > 0) { %>
+        <h2 class="text-xl font-bold mb-4">Comments</h2>
+        <ul>
+          <% post.Comments.forEach(comment => { %>
+            <li class="bg-gray-100 p-4 rounded-lg mb-2">
+              <span class="font-bold"><%= comment.username %></span>
+              <p class="mt-2"><%= comment.content %></p>
+            </li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p class="text-gray-500">No comments yet.</p>
+      <% } %>
+    </div>
+  
+    <form id="comment-form" class="mt-4">
+      <div class="flex">
+        <textarea name="content" id="comment-content" rows="3" class="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"></textarea>
+        <button type="submit" class="ml-2 bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded font-bold">Post Comment</button>
+      </div>
+      <p id="comment-error" class="text-red-500 text-sm mt-2"></p>
+    </form> -->
