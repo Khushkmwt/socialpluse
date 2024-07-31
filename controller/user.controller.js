@@ -166,7 +166,7 @@ const profilePicUpdateRender = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(404, "User not found");
     }
-    res.render('./post/profilePicUpdate.ejs', { user });
+    res.render('./user/profilePicUpdate.ejs', { user });
 })
 
     
