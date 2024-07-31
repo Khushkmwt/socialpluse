@@ -34,7 +34,7 @@
       </p>
 
       <div class="flex space-x-4">
-        <button class="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 w-16">Edit</button>
+        <a href="/profile/edit/<%= user._id %>"><button class="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 w-16">Edit</button></a>
         <button class="px-4 py-2 rounded-full bg-blue-500 text-white w-48">Send Message</button>
       </div>
     </div>
@@ -70,4 +70,6 @@
       });
     });
   </script>
+
+
 

@@ -145,7 +145,7 @@ const renderUpdatePage = asyncHandler(async (req, res) => {
     if (!user) {
             throw new ApiError(401, "User not found");
     }
-    res.render("./user/editprofile.ejs",{user})
+    res.render("./user/editProfile.ejs",{user})
  });
 
 

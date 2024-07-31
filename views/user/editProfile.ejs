@@ -1,0 +1,22 @@
+
+<% layout("./layout/boilerplate.ejs") %>
+
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold">Edit Profile</h1>
+
+    <form action="/update-profile" method="POST" enctype="multipart/form-data">
+      <!-- <div class="mb-4">
+        <label for="profilePicture" class="block text-gray-700 font-bold mb-2">Profile Picture</label>
+        <input type="file" id="profilePicture" name="profilePicture" class="border border-gray-300 rounded-md p-2">
+      </div> -->
+      <div class="mb-4">
+        <label for="bio" class="block text-gray-700 font-bold mb-2">Bio</label>
+        <textarea id="bio" name="bio" class="border border-gray-300 rounded-md p-2" rows="4"><%= user.bio %></textarea>
+      </div>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Changes</button>
+    </form>
+  </div>
+</body>
+
+
