@@ -146,7 +146,8 @@ const updateProfilePic = asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid user ID' });
     }
-    const localpath = req?.file?.url
+    const localpath = req.file.path
+    console.log(localpath)
     if(!localpath){
         throw new ApiError(400, "profile picture is required");
     }
