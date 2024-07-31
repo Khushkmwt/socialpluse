@@ -2,6 +2,7 @@ import {Post} from '../models/post.model.js'
 import {ApiError} from '../utils/ApiError.js'
 import {asyncHandler} from '../utils/asyncHandler.js'
 import {uploadOnCloudinary } from '../utils/cloudinary.js'
+import mongoose from 'mongoose'
 
 const index = asyncHandler(async (req, res) => {
     const posts = await Post.find()
@@ -34,13 +35,22 @@ const createPost = asyncHandler(async (req, res) => {
 
 //showpost
 const showPost = asyncHandler(async (req, res) => {
-    const post = await Post.findById(req.params.id)
-   .populate('owner', 'coverImg username');
-   if(!post){
-    throw new ApiError(404, 'Post not found')
-    }
-    res.render("./post/showpost.ejs",{post})
-})
+  const id = req.params.id;
+ 
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid post ID' });
+  }
+
+  const post = await Post.findById(id)
+    .populate('owner', 'coverImg username');
+
+  if (!post) {
+    throw new ApiError(404, 'Post not found');
+  }
+
+  res.render("./post/showpost.ejs", { post });
+});
+
 export {index,
     createPost,
     showPost,
