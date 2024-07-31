@@ -104,7 +104,7 @@ const showUser = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(401, "User not found");
     }
-    res.json(user);
+    res.render("./user/profile.ejs",{user})
 });
 
 //followunfollow

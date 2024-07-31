@@ -1,0 +1,73 @@
+
+<% layout("./layout/boilerplate.ejs") %>
+
+<body class="bg-gray-100 font-sans">
+
+<div class="container mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row md:space-x-8">
+
+    
+
+    <div class="flex flex-col space-y-4 w-full md:w-2/3">
+      <div class="flex items-center space-x-4">
+        <img src="<%= user.coverImg %>" alt="Profile Picture" class="h-16 w-16 rounded-full object-cover">
+
+        <div class="text-lg font-bold">
+          <h1><%= user.firstName %> <%= user.lastName %></h1>
+          <p class="text-gray-600">@<%= user.username %></p>
+        </div>
+      </div>
+
+      <div class="flex space-x-4">
+        <p class="px-4 py-2 rounded-full bg-blue-500 text-white">Following: <%= user.following.length %></p>
+        <p class="px-4 py-2 rounded-full bg-green-500 text-white">Followers: <%= user.followers.length %></p>
+      </div>
+
+      <p class="text-gray-700">Bio: 
+        RTU'26 IT
+        <br>
+        From: Bhilwara
+        <br>
+        chai lover
+        <br>
+        single and always single
+      </p>
+
+      <div class="flex space-x-4">
+        <button class="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 w-16">Edit</button>
+        <button class="px-4 py-2 rounded-full bg-blue-500 text-white w-48">Send Message</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+    const profilePictureUpload = document.getElementById('profile-picture-upload');
+  
+    profilePictureUpload.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+  
+      // Implement logic to upload the file to your server
+      // This would involve sending a POST request with the file data
+  
+      // Example using fetch API (replace with your actual implementation)
+      fetch('/upload-profile-picture', {
+        method: 'POST',
+        body: new FormData({
+          profilePicture: file
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle successful upload response (e.g., update profile picture)
+        console.log('Profile picture uploaded successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error uploading profile picture:', error);
+      });
+    });
+  </script>
+
