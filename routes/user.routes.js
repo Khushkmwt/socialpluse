@@ -1,4 +1,4 @@
-import {signupUser,loginUser,logoutUser,showUser,followUnfollow} from '../controller/user.controller.js'
+import {signupUser,loginUser,logoutUser,showUser,followUnfollow,updateUser,renderUpdatePage} from '../controller/user.controller.js'
 import express from 'express'
 const router = express.Router()
 import {upload} from '../middleware/multer.middleware.js'
@@ -14,6 +14,7 @@ router.get('/login',(req,res) =>{
     
     res.render("./user/login.ejs");
 })
+router.get('/profile/edit/:id',renderUpdatePage)
 router.get('/show/:id',showUser)
 router.post('/follow/:id', verifyJWT,followUnfollow)
 router.post('/login',loginUser)

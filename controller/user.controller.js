@@ -111,55 +111,43 @@ const showUser = asyncHandler(async (req, res) => {
     }
     //posts
     const posts = await Post.find({ owner: req.params.id });
-    res.json({ user, posts });
+   // res.json({ user, posts });
     // res.json(user);
-    res.render("./user/profile.ejs",{user})
+    res.render("./user/profile.ejs",{user,posts})
+});
+ //updateuserprofilepicandbio
+const updateUser = asyncHandler(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+            $set: {
+                profilePic: req.body.profilePic,
+                bio: req.body.bio
+                }
+        },
+         { new: true}
+    );
+    if (!user) {
+        throw new ApiError(401, "User not found");
+        }
+        res.json(user);
 });
 
-//followunfollow
-// const followUnfollow = asyncHandler(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     if (!user) {
-//         throw new ApiError(401, "User not found");
-//     }
-//     //check if user is already following
-//     const isFollowing = await User.findOne({ _id: req.user._id, following: { $in: [req.params.id] } });
-//     //followers
-//     const isFollower = await User.findOne({ _id: req.params.id, followers: {
-//         $in: [req.user._id]
-//         }
-//         });
-       
-                        
-//      if (isFollowing) {
-//             //unfollow
-//         await User.findByIdAndUpdate(req.user._id, {
-//            $pull: {
-//             following: req.params.id 
-//         }
-//         },{ new: true });
-//         await User.findByIdAndUpdate(req.params.id, {
-//             $pull: {
-//                 followers: req.user._id
-//                 }
-//                 });
-//         res.json({ message: "Unfollowed" });
-//      } else {
-//                         //follow
-//          await User.findByIdAndUpdate(req.user._id, {
-//              $push: {
-//                      following: req.params.id
-//                   }
-//              },{ new: true }
-//         );
-//         await User.findByIdAndUpdate(req.params.id, {
-//             $push: {
-//                 followers: req.user._id
-//                 }
-//                 });
-//         res.json({ message: "Followed" });
-//          }
-//      })
+//renderupdatepage
+const renderUpdatePage = asyncHandler(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+        }
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
+            throw new ApiError(401, "User not found");
+    }
+    res.render("./user/editprofile.ejs",{user})
+ });
+
 
 //addfollowingandfollower
 const followUnfollow = asyncHandler(async (req, res) => {
@@ -265,4 +253,7 @@ export {
     logoutUser,
     showUser,
    followUnfollow,
+   renderUpdatePage,
+   updateUser,
+
 }
