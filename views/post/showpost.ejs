@@ -5,7 +5,7 @@
       <div class="bg-white shadow rounded-lg mb-4 w-3/4 border-solid border-2   border-4 border-indigo-500/100">
         <div class="flex items-center p-4 border-b border-gray-300">
           <img src="<%= post?.owner?.coverImg %>" class="w-10 h-10 rounded-full mr-2" alt="Profile picture">
-          <span class="font-bold"><%= post.owner.username %></span>
+          <a href="/show/<%= post.owner._id %>"><span class="font-bold"><%= post.owner.username %></span></a>
         </div>
         <img src="<%= post?.image %>" class="w-full h-2/5 object-cover rounded-lg pt-1.5">
         <div class="flex justify-between items-center p-4">

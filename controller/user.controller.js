@@ -113,6 +113,7 @@ const showUser = asyncHandler(async (req, res) => {
     const posts = await Post.find({ owner: req.params.id });
     res.json({ user, posts });
     // res.json(user);
+    res.render("./user/profile.ejs",{user})
 });
 
 //followunfollow
