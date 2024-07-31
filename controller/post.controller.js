@@ -36,20 +36,29 @@ const createPost = asyncHandler(async (req, res) => {
 //showpost
 const showPost = asyncHandler(async (req, res) => {
   const id = req.params.id;
- 
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: 'Invalid post ID' });
   }
 
   const post = await Post.findById(id)
-    .populate('owner', 'coverImg username');
+    .populate('owner', 'coverImg username') // Populate owner details
+    .populate({
+      path: 'Comments',
+      populate: {
+        path: 'author',
+        select: 'username coverImg' // Include both username and coverImg fields
+      }
+    });
 
   if (!post) {
     throw new ApiError(404, 'Post not found');
   }
 
+  console.log(post); // Now includes populated comments with complete author data
   res.render("./post/showpost.ejs", { post });
 });
+
 
 export {index,
     createPost,
