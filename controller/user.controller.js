@@ -98,6 +98,60 @@ const logoutUser = asyncHandler(async (req, res) => {
     .redirect("/home");
 });
 
+//showuser
+const showUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select("-password -refreshToken");
+    if (!user) {
+        throw new ApiError(401, "User not found");
+    }
+    res.json(user);
+});
+
+//followunfollow
+const followUnfollow = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        throw new ApiError(401, "User not found");
+    }
+    //check if user is already following
+    const isFollowing = await User.findOne({ _id: req.user._id, following: { $in: [req.params.id] } });
+    //followers
+    const isFollower = await User.findOne({ _id: req.params.id, followers: {
+        $in: [req.user._id]
+        }
+        });
+       
+                        
+     if (isFollowing) {
+            //unfollow
+        await User.findByIdAndUpdate(req.user._id, {
+           $pull: {
+            following: req.params.id 
+        }
+        },{ new: true });
+        await User.findByIdAndUpdate(req.params.id, {
+            $pull: {
+                followers: req.user._id
+                }
+                });
+        res.json({ message: "Unfollowed" });
+     } else {
+                        //follow
+         await User.findByIdAndUpdate(req.user._id, {
+             $push: {
+                     following: req.params.id
+                  }
+             },{ new: true }
+        );
+        await User.findByIdAndUpdate(req.params.id, {
+            $push: {
+                followers: req.user._id
+                }
+                });
+        res.json({ message: "Followed" });
+         }
+     })
+
 
 
 const generateAccessAndRefereshTokens = async(userId) =>{
@@ -171,5 +225,6 @@ export {
     refreshAccessToken,
     signupUser,
     logoutUser,
-
+    showUser,
+   followUnfollow,
 }
