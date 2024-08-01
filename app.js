@@ -28,6 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 import userRouter from './routes/user.routes.js'
 import postRouter from './routes/post.routes.js'
 import commentRouter from './routes/comment.routes.js'
+import { ApiError } from "./utils/ApiError.js";
 app.use(authenticateUser);
   
 app.use((req, res, next) => {
@@ -55,13 +56,15 @@ app.use("/post/comment",commentRouter)
 
 app.use((req, res, next) => {
     res.status(404);
-    res.send("page not found")
+    throw new ApiError(404, "Page not found");
+  //  res.send("page not found")
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+    console.error(err);
+   res.render('./layout/error.ejs',{err})
+  //  res.status(500).send('Something broke!');
 });
 
 export {app}
