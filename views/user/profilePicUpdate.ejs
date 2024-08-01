@@ -1,21 +1,215 @@
 
-<% layout("./layout/boilerplate.ejs") %>
+
+<!-- 
+ <% layout("./layout/boilerplate.ejs") %>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+ <style>
+   body {
+     overflow: hidden;
+     margin: 0;
+     background: linear-gradient(270deg, #4f46e5, #3b82f6, #06b6d4);
+     background-size: 600% 600%;
+     animation: gradientAnimation 15s ease infinite;
+   }
+   @keyframes gradientAnimation {
+     0% {
+       background-position: 0% 50%;
+     }
+     50% {
+       background-position: 100% 50%;
+     }
+     100% {
+       background-position: 0% 50%;
+     }
+   }
+   .container {
+     position: relative;
+     z-index: 10;
+     pointer-events: auto; /* Ensure the form is interactive */
+   }
+   .particle {
+     position: absolute;
+     border-radius: 50%;
+     background: rgba(255, 255, 255, 0.1);
+     pointer-events: none;
+     will-change: transform; /* Optimize for animations */
+   }
+ </style>
+ 
+ <body>
+   <div class="container mx-auto p-6 justify-center relative">
+     <div class="flex justify-center pt-24">
+       <h1 class="text-4xl font-bold text-white">Update Profile Picture</h1>
+     </div>
+     <div class="flex justify-center pt-3 pb-4">
+       <form action="/profile/updatepic/<%= user._id %>" method="POST" enctype="multipart/form-data" class="mt-6 border border-gray-300 p-6 rounded-lg w-96 bg-white shadow-lg">
+         <label for="profilePic" class="block text-sm font-medium text-gray-700">Select Image:</label>
+         <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+         <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Update</button>
+       </form>
+     </div>
+   </div>
+ 
+   <script>
+     const numParticles = 100;
+     const particles = [];
+     const mouse = { x: 0, y: 0 };
+ 
+     // Create particle elements
+     for (let i = 0; i < numParticles; i++) {
+       const particle = document.createElement('div');
+       particle.classList.add('particle');
+       const size = Math.random() * 8 + 5; // Random size between 5 and 13
+       particle.style.width = `${size}px`;
+       particle.style.height = `${size}px`;
+       particle.style.left = `${Math.random() * 100}vw`;
+       particle.style.top = `${Math.random() * 100}vh`;
+       particle.style.transform = `translateZ(${Math.random() * 200}px)`; // Random depth for 3D effect
+       document.body.appendChild(particle);
+       particles.push(particle);
+     }
+ 
+     // Function to animate particles
+     function animateParticles() {
+       particles.forEach((particle) => {
+         const randomX = (Math.random() - 0.5) * 50; // Random horizontal movement
+         const randomY = (Math.random() - 0.5) * 50; // Random vertical movement
+         
+         gsap.to(particle, {
+           duration: 1,
+           x: mouse.x + randomX - (particle.offsetWidth / 2),
+           y: mouse.y + randomY - (particle.offsetHeight / 2),
+           ease: "power2.out",
+         });
+       });
+     }
+ 
+     // Event listener for mouse movement
+     document.addEventListener('mousemove', (event) => {
+       mouse.x = event.clientX;
+       mouse.y = event.clientY;
+       animateParticles();
+     });
+ 
+     // Optional: Animate background gradient
+     gsap.to("body", {
+       duration: 10,
+       backgroundColor: "rgb(30, 58, 138)", // Change to a deeper shade
+       repeat: -1,
+       yoyo: true,
+       ease: "linear",
+     });
+   </script>
+ </body>
+  -->
 
 
 
-  <body class="bg-gray-100">
-    <div class="container mx-auto p-6 justify-center ">
-      <div class="flex justify-center pt-24">
-      <h1 class="text-3xl font-bold text-gray-800 ">Update Profile Picture</h1>
-      </div>
-      <div class="flex justify-center pt-3 pb-4 h-80 pb-4">
-      <form action="/profile/updatepic/<%= user._id %>" method="POST" enctype="multipart/form-data" class="mt-6 border border-gray-300 p-4 rounded-lg w-96 ">
+
+
+
+ <% layout("./layout/boilerplate.ejs") %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<style>
+  body {
+    overflow: hidden;
+    margin: 0;
+    background: linear-gradient(270deg, #bdb9f3, #8db0e9, #7bcedd);
+    background-size: 600% 600%;
+    animation: gradientAnimation 15s ease infinite;
+    perspective: 1000px; /* Add perspective for 3D effect */
+  }
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .container {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto; /* Ensure the form is interactive */
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    will-change: transform; /* Optimize for animations */
+  }
+</style>
+
+<body>
+  <div class="container mx-auto p-6 justify-center relative">
+    <div class="flex justify-center pt-24">
+      <h1 class="text-4xl font-bold text-white">Update Profile Picture</h1>
+    </div>
+    <div class="flex justify-center pt-3 pb-4">
+      <form action="/profile/updatepic/<%= user._id %>" method="POST" enctype="multipart/form-data" class="mt-6 border border-gray-300 p-6 rounded-lg w-96 bg-white shadow-lg">
         <label for="profilePic" class="block text-sm font-medium text-gray-700">Select Image:</label>
-        <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-80 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        <button type="submit" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded pt-3.5">Update</button>
+        <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <button type="submit" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">Update</button>
       </form>
     </div>
-    </div>
-  </body>
+  </div>
 
+  <script>
+    const numParticles = 100;
+    const particles = [];
+    const mouse = { x: 0, y: 0 ,z:0};
 
+    // Create particle elements
+    for (let i = 0; i < numParticles; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      const size = Math.random() * 8 + 5; // Random size between 5 and 13
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.top = `${Math.random() * 100}vh`;
+      particle.style.transform = `translateZ(${Math.random() * 100}px)`; // Random depth for 3D effect
+      document.body.appendChild(particle);
+      particles.push(particle);
+    }
+
+    // Function to animate particles with XYZ effect
+    function animateParticles() {
+      particles.forEach((particle) => {
+        const randomX = (Math.random() - 0.5) * 100; // Random horizontal movement
+        const randomY = (Math.random() - 0.5) * 100; // Random vertical movement
+        const randomZ = (Math.random() - 0.5) * 100; // Random depth movement
+        
+        gsap.to(particle, {
+          duration: 1,
+          x: mouse.x + randomX - (particle.offsetWidth / 2),
+          y: mouse.y + randomY - (particle.offsetHeight / 2),
+          z: randomZ, // 3D movement in Z-axis
+          ease: "power2.out",
+        });
+      });
+    }
+
+    // Event listener for mouse movement
+    document.addEventListener('mousemove', (event) => {
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+      animateParticles();
+    });
+
+    // Optional: Animate background gradient
+    gsap.to("body", {
+      duration: 10,
+      backgroundColor: "rgb(30, 58, 138)", // Change to a deeper shade
+      repeat: 1,
+      yoyo: true,
+      ease: "linear",
+    });
+  </script>
+</body>
