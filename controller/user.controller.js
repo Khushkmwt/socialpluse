@@ -113,7 +113,7 @@ const showUser = asyncHandler(async (req, res) => {
         throw new ApiError(401, "User not found");
     }
     //posts
-    const posts = await Post.find({ owner: req.params.id });
+    const posts = await Post.find({ owner: req.params.id }).populate('owner', 'coverImg username');
    // res.json({ user, posts });
     // res.json(user);
     res.render("./user/profile.ejs",{user,posts})
