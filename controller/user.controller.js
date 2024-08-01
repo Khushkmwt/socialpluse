@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken'
 import {ApiError} from '../utils/ApiError.js'
 import {asyncHandler} from '../utils/asyncHandler.js'
 import { Post } from '../models/post.model.js'
+import { uploadOnCloudinary } from '../utils/cloudinary.js'
 import mongoose from 'mongoose'
+
 const signupUser = async (req,res) => {
     const {email,password,firstName, lastName,username} = req.body
    
@@ -20,7 +22,7 @@ const signupUser = async (req,res) => {
         throw new ApiError(400,'Failed to create new user')
      }
      console.log(newUser)
-      res.status(201).json(user)
+     res.redirect('/post')
 }
 
 //login
@@ -66,6 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // Set cookies and redirect to the home page
     res.cookie("accessToken", accessToken, options);
     res.cookie("refreshToken", refreshToken, options);
+    res.redirect('/post')
     res.send(loggedInUser);
 });
 
@@ -97,7 +100,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .redirect("/home");
+    .redirect("/post");
 });
 
 //showuser
@@ -136,40 +139,50 @@ const updateUser = asyncHandler(async (req, res) => {
     );
     if (!user) {
         throw new ApiError(401, "User not found");
-        }
-        res.json(user);
+    }
+    res.redirect('/post')
 });
 //updateprofilepic
 const updateProfilePic = asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ message: 'Invalid user ID' });
     }
+    const localpath = req.file.path
+    console.log(localpath)
+    if(!localpath){
+        throw new ApiError(400, "profile picture is required");
+    }
+    const imgUrl = await uploadOnCloudinary(localpath)
+    if(!imgUrl){
+    throw new ApiError(400, "Failed to upload image");
+    }
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             $set: {
-                profilePic: req.body.profilePic
+                coverImg: imgUrl.url
                 }
         },
         { new: true }
     );
-    if (!user) {
-        if (!user) {
+ 
+     if (!user) {
             throw new ApiError(404, "User coverImg not updated");
-        }
     }
-    res.json(user)
+    
+    res.redirect('/post')
     });
 //profilepicupdaterender
 const profilePicUpdateRender = asyncHandler(async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
     const user = await User.findById(req.params.id);
     if (!user) {
         throw new ApiError(404, "User not found");
     }
     res.render('./user/profilePicUpdate.ejs', { user });
 })
-
-    
 
 //renderupdatepage
 const renderUpdatePage = asyncHandler(async (req, res) => {
@@ -182,7 +195,6 @@ const renderUpdatePage = asyncHandler(async (req, res) => {
     }
     res.render("./user/editProfile.ejs",{user})
  });
-
 
 //addfollowingandfollower
 const followUnfollow = asyncHandler(async (req, res) => {
@@ -201,20 +213,19 @@ const followUnfollow = asyncHandler(async (req, res) => {
         // Unfollow
         await User.findByIdAndUpdate(req.user._id, { $pull: { following: req.params.id } });
         await User.findByIdAndUpdate(req.params.id, { $pull: { followers: req.user._id } });
+        res.redirect('/post')
         res.json({ message: "Unfollowed" });
       } else {
         // Follow
         await User.findByIdAndUpdate(req.user._id, { $push: { following: req.params.id } });
         await User.findByIdAndUpdate(req.params.id, { $push: { followers: req.user._id } });
+        res.redirect('/post')
         res.json({ message: "Followed" });
       }
   
      
   });
   
-
-
-
 const generateAccessAndRefereshTokens = async(userId) =>{
     try {
         const user = await User.findById(userId)
@@ -231,7 +242,6 @@ const generateAccessAndRefereshTokens = async(userId) =>{
         throw new ApiError(500, "Something went wrong while generating referesh and access token")
     }
 }
-
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken

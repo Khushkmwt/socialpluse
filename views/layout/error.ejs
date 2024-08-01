@@ -1,0 +1,12 @@
+
+<% layout("./layout/boilerplate.ejs") %>
+
+<body class="bg-gray-100">
+    <div class=" mx-auto p-8 flex justify-center items-center">
+        <div class=" p-8 ">
+            <h1 class="text-3xl font-bold text-red-500">Error <%= err.status %></h1>
+            <p class="text-lg text-gray-700"><%= err.message %></p>
+        </div>
+      
+    </div>
+ </body>

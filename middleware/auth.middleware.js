@@ -54,3 +54,19 @@ export const authenticateUser = async (req, res, next) => {
         next(error);
     }
 };
+
+//isreq.userisOwnerofProfile
+export const isUserOwnerOfProfile = asyncHandler (async (req, res, next) => {
+   
+        const userId = req.user._id;
+        const profileId = req.params.id;
+        const profile = await User.findById(profileId);
+        if (!profile) {
+            throw new ApiError(404, "Profile not found");
+        }
+        if (profile._id.toString() !== userId) {
+            throw new ApiError(403, "You do not own this profile");
+        }
+         next();
+                
+})
